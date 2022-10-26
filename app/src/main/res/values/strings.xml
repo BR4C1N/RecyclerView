@@ -4,4 +4,6 @@
     <string name="Telefone">Telefone</string>
     <string name="salvar">Salvar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="editar">Editar</string>
+    <string name="remover">Remover</string>
 </resources>
