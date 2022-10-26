@@ -4,16 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.software.bancoDados.ContatoDB;
@@ -31,22 +29,24 @@ public class MainActivity extends AppCompatActivity {
     Button botaoCancelar;
 
     List<Contato> dadosContatos;
-    ListView listagemContatos;
+    RecyclerView listagemContatos;
+    ContatoAdapter adapter;
 
-    DBHelper dbHelper;
     ContatoDB contatoDB;
-    ArrayAdapter adapter;
 
     Contato contato;
     Boolean verificarBotaoCancelar;
     Boolean verificarEditarContato;
 
+    LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
 
-        dbHelper = new DBHelper(MainActivity.this);
+        DBHelper dbHelper = new DBHelper(MainActivity.this);
         contatoDB = new ContatoDB(dbHelper);
 
         verificarBotaoCancelar = false;
@@ -61,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
         botaoCancelar.setBackgroundResource(R.color.desativado);
 
         dadosContatos = new ArrayList<>();
-        adapter = new ArrayAdapter(this, android.support.constraint.R.layout.support_simple_spinner_dropdown_item, dadosContatos);
-
-        listagemContatos.setAdapter(adapter);
         contatoDB.listar(dadosContatos);
+        adapter = new ContatoAdapter(dadosContatos);
+        listagemContatos.setLayoutManager(linearLayoutManager);
+        listagemContatos.setAdapter(adapter);
+
         acaoComponente();
     }
 
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         listagemContatos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        });*/
 
         botaoCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
